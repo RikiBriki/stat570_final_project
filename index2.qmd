@@ -1,0 +1,245 @@
+---
+title: "Archery Game Data Preparation"
+format: html
+css: styles.css
+editor: visual
+---
+
+::: {.callout-note appearance="simple"}
+Disclaimer
+
+This notebook is the first example of a Firebase Analytics data being flattened in R Programming Language, and solutions might not be the most optimal ones.
+:::
+
+\
+Preparing JSONL(L stands for new line delimited) data to be in tabular, can sometimes be a journey,
+
+Especially when you are dealing with Firebase Analytics Data,\
+What is Firebase ? It's the most widely used data tracking software used for mobile applications. Below is how Firebase analytics data look like when it's partially cleaned:
+
+![](images/example_data.png)
+
+Each row is an event, all events have a time stamp, all events have some other extra information like country , version etc, but more importantly there is a key, and values, where values can be int, float, or string. But not two different at the same time for a given single key.
+
+The above is a summary of a generic, mostly clean Firebase analytics data, the picture is from Google Cloud Bigquery
+
+![](images/letsbegin.jpeg){width="258"}
+
+Trick 1\
+You can use the "here" function from , guess the name "here" package in R to set working directory to your script's location, so people who use your code don't have to change any lines to test it out
+
+```{r}
+ setwd(here::here()) 
+```
+
+You can now check if the here::here() have worked
+
+```{r}
+ getwd()
+```
+
+As we previously have shown you, our data is in json format, lets load it and check the head of the data to see how it looks
+
+```{r}
+#| warning: false
+library(jsonlite) ## no error messages here thanks to the #| warning: false option!
+library(tidyverse)
+jsonl_data <- stream_in(file("data.json"),verbose = FALSE)
+head(jsonl_data,2)
+```
+
+Overall, it is very uninterpretable , because we have key value formats, data frame of data frames, list of data frames, and all sorts of weird things , Let's also without going into next levels through use of max.level=1 argument check out the data again
+
+```{r}
+#| class-output: scrolling
+str(jsonl_data,max.level = 1)
+```
+
+So we have some Lists, some data frames, some characters, and some logical ones , we got a beautiful soup ,
+
+recall, the event_params column from the example picture
+
+![](images/example_data-01.png)
+
+event_params has key and value nestings, and value has string, float , int double value nestings, and these are all in different formats, lets take a look at event_params with str function
+
+```{r}
+#| class-output: scrolling
+str(jsonl_data$event_params,list.len=3)
+```
+
+We have a complicated format, here is a demonstration of how to access event_params and its sub parts
+
+```{r}
+class(jsonl_data) ## Whole data class 
+class(jsonl_data$event_params) ## Event params class 
+jsonl_data$event_params[[1]] ## access first row's event_params
+class(jsonl_data$event_params[[1]]) ## it's class 
+jsonl_data$event_params[[1]][1] ## how to access event_params$key
+class(jsonl_data$event_params[[1]][1]) ## it's class
+jsonl_data$event_params[[1]][2] ## how to access event_params$value
+class(jsonl_data$event_params[[1]][2]) ## it's class
+```
+
+We have a data frame jsonl_data, it has a list event_params, list is made of data frames, and in the data frame we have key column ,and a data frame named value, which has two columns, named int_value and string_value.\
+\
+Here is the issue, our data also has inconsistencies bellow take a look at two different "dataframes" under the event_params
+
+```{r}
+jsonl_data$event_params[[4983]]
+
+jsonl_data$event_params[[1]]
+```
+
+Lets begin cleaning , firstly there were some non data frame, lists objects inside the event_params, we will iterate over the event_params, and convert them.
+
+```{r}
+list_of_dfs=list()
+for(i in 1:nrow(jsonl_data)){
+  temp_df= as.data.frame(jsonl_data$event_params[[i]])
+  list_of_dfs[[i]] <- temp_df
+}
+class(list_of_dfs)
+list_of_dfs[[1]]
+```
+
+in the next step re call we had int value, and string value for each key, with one of these two always being null.\
+Since one of them is always null , we can concoctate them by binding columns , but we got two type of objects inside the event_params( was 3 before the above loop ), the case when there is\
+event_params with key, and value with value having 2 more sub columns and the case with even_params having no nested value column but instead a "string_value" column
+
+We can iterate over it in a for loop , for these 2 specific cases fix, bind the columns and unnest it out of the value and have a single value column, and when there is only key with string_value, we can just rename the column
+
+\
+For fun we will use try catch because why not learn it while working in R ,Example usage of try catch
+
+Try
+
+To Do Something
+
+Except \## D0f fail
+
+Do something else instead\
+
+```{r}
+for (i in seq_along(list_of_dfs)) {
+  #print(i)
+  tryCatch({
+    if ("value" %in% names(list_of_dfs[[i]])) {
+      if (is.list(list_of_dfs[[i]]$value)) {
+        list_of_dfs[[i]]$value <- ifelse(
+          !is.na(list_of_dfs[[i]]$value$int_value),
+          as.character(list_of_dfs[[i]]$value$int_value),
+          as.character(list_of_dfs[[i]]$value$string_value)
+        )
+        list_of_dfs[[i]]$value <- as.character(list_of_dfs[[i]]$value)
+        list_of_dfs[[i]] <- list_of_dfs[[i]][, !(names(list_of_dfs[[i]]) %in% c("int_value", "string_value"))]
+      }
+    }
+  }, error = function(e) {
+    # If an error occurs, rename the second column to "value"
+    if (length(names(list_of_dfs[[i]])) >= 2) {
+      #list_of_dfs[[4983]]="cancer"
+      #print(i)
+      #print(list_of_dfs[[i]])
+      #print(i)
+      new_temp_df= cbind.data.frame(list_of_dfs[[i]][[1]],c(list_of_dfs[[i]][[2]]))
+      names(new_temp_df) <- c("key","value")
+      list_of_dfs[[i]]<<- new_temp_df
+      #print(list_of_dfs[[i]])
+    }
+  })
+}
+
+list_of_dfs[[1]]
+```
+
+Note that try catch and error handling is usually much slower than using if statements and should primarily be used for cases that can't be predicted or handled with regular methods. but it can also be faster when used in place of an extremely complex if check.
+
+I the next step we flatten the event_params,
+
+Instead of having key and values, what if every unique key was a data set column , and values were under it, and if in that respective row, there is no element for a specific key we can just keep null, this would make it easier for anyone else working in this data in future.\
+\
+Luckily, Tidyverse ensures we don't have to write a complex loop here since we have dealt with the inconsistencies in our data but first lets get these thing out of list of data frames into a single DF, we will use bind_rows function again from tidyverse
+
+```{r}
+combined_df <- bind_rows(list_of_dfs, .id = "df_id")
+head(combined_df) 
+
+```
+
+Now all we got to do is change the binded element from long to wide format for each ID, pivot_wider will automatically fill it with nulls for cases when in that row a specific key is not used.
+
+```{r}
+flattened_df <- combined_df %>%
+  pivot_wider(names_from = key, values_from = value)
+
+flattened_df <- flattened_df[, -1]
+
+head(flattened_df )
+
+```
+
+We can now cbind this into our main dataframe, and also drop some other irrelevant columns and the column we have just flattened
+
+```{r}
+final_df= cbind.data.frame(jsonl_data,flattened_df)
+final_df2= final_df |> select(-event_params,-user_properties,-items) 
+```
+
+Let's take a look at our data again
+
+```{r}
+str(final_df2)
+```
+
+Our data is now free of the chaos of event_params\
+We however still have few more things to do as we got some columns nested, example, geo column has other columns under it like geo.country, geo.continent and so on, and this might make future work slower,
+
+```{r}
+str(final_df2$geo)
+```
+
+To ensure our data is friendly for anyone, we can write a small function that detect such "dataframes under our dataframe" and unnest them
+
+```{r}
+is_dataframe <- function(column) {
+  is.data.frame(column)
+}
+### object to save columns which are dataframes
+dataframe_cols <- c()
+
+# Loop through each column in final_df2
+for (col in colnames(final_df2)) {
+  if (is_dataframe(final_df2[[col]])) {
+    dataframe_cols <- c(dataframe_cols, col)
+  }
+}
+
+## loop through them, take the column under column to outside of it  and combined them
+
+combined_nested_dfs=rep(0,nrow(final_df2))
+
+for (element in dataframe_cols){
+  temp_index=as.character(element)
+  temp_df= final_df2[[temp_index]]
+  combined_nested_dfs=cbind.data.frame(combined_nested_dfs,temp_df)
+}
+final_df2=final_df2 |> select(-dataframe_cols)
+final_df3=cbind.data.frame(final_df2,combined_nested_dfs)
+
+options(scipen=999)
+write.csv(final_df3,"plsfkinwork3.csv")
+
+```
+
+We have written lots of code to have an "end scientist" friendly rectangular dataset final look before we end the dataprep
+
+```{r}
+str(final_df3)
+```
+
+Lets save the results before we begin our data analysis.
+
+```{r}
+write.csv(final_df3,"plsfkinwork3.csv")
+```

@@ -1,0 +1,57 @@
+---
+title: "Introduction"
+---
+
+The data that has been used in this study in gathered from a mobile game that can be played on an Android operating system.
+
+The data has a total of **24762** observations and **66** variables. In the game there is a spinning ball in the middle and the player throws arrows to the spinning ball by touching the screen, if the arrows hit on another but not the spinning ball, the player has to repeat the level.
+
+There are 200 levels and each level gets more difficult gradually.The importance of the Datasets is, they have been collected detailed and the sample size is enough to make interpretation. Also the sample size is not too large to cause any kind of problems, therefore no subsample has been taken. The original dataset is in json format and has to be cleaned, the variable names have to be adjusted and the types of the columns should be corrected.
+
+If you haven't seen a json data yet, this is how it looks like :
+
+![](JasonPNG.png){width="530"}
+
+So as you can see, the data is very hard to understand and analyse.
+
+So we had to change the format to a csv.
+
+![](datacsv.png){width="526"}
+
+Now it looks better :)
+
+The game has been available to users for a while *(2012)*. A lot of data was collected during this time. From which country the users are in to which phone they use.
+
+There are also interesting things. There are even information about how much time players spent on each level, their success rates in the levels, and the android version they used.
+
+Based on what we know, we wondered about some things and wanted to visualize them and share the results we found with you.
+
+A few things we will cover up :
+
+**Research Question 1:**
+
+-   How does the distribution of players vary across continents and countries in the game, and are there noticeable patterns in user engagement based on continent?
+
+**Research Question 2:**
+
+-   What is the distribution of the maximum level attained by users in the game, analyzed in conjunction with their respective continents ?
+
+-   Are there significant variations in the maximum level achieved, and do these patterns differ across continents ?"
+
+**Research Question 3:**
+
+-   How does user engagement differ across mobile device categories in the game? Furthermore, are there variations in the maximum levels achieved by users within each category?
+
+-   This analysis seeks to uncover patterns and disparities in user behavior based on the distinction between mobile and phone categories."
+
+**Research Question 4:**
+
+-   What is the distribution of successful trial frequencies at different levels within a mobile game?
+
+The answers and visualizations to these questions will give us a better understanding of the game.
+
+![](Mostcommonphones){width="400"}
+
+This is a photo of the 43th level. The screenshot is from my phone, I got to the 43th level in around 45 minutes, so you can see that the game isn't that hard.
+
+![](Level43.jpeg){width="224"}

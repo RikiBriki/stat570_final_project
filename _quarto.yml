@@ -1,0 +1,23 @@
+project:
+  type: website
+
+website:
+  title: "The Archery Game"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Introduction
+      - href: index2.qmd
+        text: Archery Game Data Preparation
+      - href: index3.qmd
+        text: Archery Game Analysis
+      - about.qmd
+
+format:
+  html:
+    theme: lux
+    css: styles.css
+    toc: true
+
+editor: visual
+

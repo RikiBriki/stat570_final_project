@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The Archery Game - Archery Game Data Preparation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">The Archery Game</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Introduction</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./index2.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Archery Game Data Preparation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./index3.html" rel="" target="">
+ <span class="menu-text">Archery Game Analysis</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html" rel="" target="">
+ <span class="menu-text">About Us</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Archery Game Data Preparation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Disclaimer</p>
+<p>This notebook is the first example of a Firebase Analytics data being flattened in R Programming Language, and solutions might not be the most optimal ones.</p>
+</div>
+</div>
+</div>
+<p><br>
+Preparing JSONL(L stands for new line delimited) data to be in tabular, can sometimes be a journey,</p>
+<p>Especially when you are dealing with Firebase Analytics Data,<br>
+What is Firebase ? It’s the most widely used data tracking software used for mobile applications. Below is how Firebase analytics data look like when it’s partially cleaned:</p>
+<p><img src="images/example_data.png" class="img-fluid"></p>
+<p>Each row is an event, all events have a time stamp, all events have some other extra information like country , version etc, but more importantly there is a key, and values, where values can be int, float, or string. But not two different at the same time for a given single key.</p>
+<p>The above is a summary of a generic, mostly clean Firebase analytics data, the picture is from Google Cloud Bigquery</p>
+<p><img src="images/letsbegin.jpeg" class="img-fluid" width="258"></p>
+<p>Trick 1<br>
+You can use the “here” function from , guess the name “here” package in R to set working directory to your script’s location, so people who use your code don’t have to change any lines to test it out</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">setwd</span>(here<span class="sc">::</span><span class="fu">here</span>()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can now check if the here::here() have worked</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">getwd</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "C:/Users/Alta/OneDrive/Desktop/archery_game/archery_game"</code></pre>
+</div>
+</div>
+<p>As we previously have shown you, our data is in json format, lets load it and check the head of the data to see how it looks</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite) <span class="do">## no error messages here thanks to the #| warning: false option!</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>jsonl_data <span class="ot">&lt;-</span> <span class="fu">stream_in</span>(<span class="fu">file</span>(<span class="st">"data.json"</span>),<span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(jsonl_data,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  event_date  event_timestamp  event_name
+1   20231221 1703146325195000  app_remove
+2   20231221 1703134161235001 screen_view
+                                                                                                                                                                                                                             event_params
+1                                                                                                                                               ga_session_id, ga_session_number, firebase_event_origin, 1702888810, 10, NA, NA, NA, auto
+2 entrances, ga_session_number, ga_session_id, firebase_screen_id, firebase_event_origin, engaged_session_event, firebase_screen_class, 1, 52, 1703134160, -8779596609919170096, NA, 1, NA, NA, NA, NA, NA, auto, NA, UnityPlayerActivity
+  event_bundle_sequence_id event_server_timestamp_offset
+1                       15                 1383899326014
+2                      100                           494
+                    user_pseudo_id privacy_info.analytics_storage
+1 eae0e04fa3fa69ef646baaeaa716ea6b                            Yes
+2 74b842a52de12e4cf74034f998ee98cf                            Yes
+  privacy_info.ads_storage privacy_info.uses_transient_token
+1                      Yes                                No
+2                      Yes                                No
+                                                                                                                         user_properties
+1 ga_session_id, ga_session_number, first_open_time, 1702888810, 10, 1701284400000, 1702888810463000, 1702888810463000, 1701284050034000
+2 ga_session_number, ga_session_id, first_open_time, 52, 1703134160, 1698397200000, 1703134160741000, 1703134160741000, 1698396193166000
+  user_first_touch_timestamp device.category device.mobile_brand_name
+1           1701284050034000          mobile                  Samsung
+2           1698396193166000          mobile                  Samsung
+  device.mobile_model_name device.mobile_marketing_name
+1                 SM-G7102               Galaxy Grand 2
+2                 SM-J110H                    Galaxy J1
+  device.mobile_os_hardware_model device.operating_system
+1                        SM-G7102                 Android
+2                        SM-J110H                 Android
+  device.operating_system_version                device.advertising_id
+1                   Android 4.4.2 f28a3de1-340f-4d84-a491-ae5bc5c66a8a
+2                   Android 4.4.4 6d58a8cf-8508-45cb-9f0a-41fbbc14d0c7
+  device.language device.is_limited_ad_tracking device.time_zone_offset_seconds
+1           ar-ae                           Yes                            7200
+2           ar-ae                           Yes                            7200
+        geo.city geo.country geo.continent                 geo.region
+1 Kafr el-Sheikh       Egypt        Africa Kafr El-Sheikh Governorate
+2                     Jordan          Asia          Amman Governorate
+  geo.sub_continent geo.metro        app_info.id app_info.version
+1   Northern Africa (not set) com.elakerem.focus           2.0.22
+2      Western Asia (not set) com.elakerem.focus           2.0.22
+                     app_info.firebase_app_id app_info.install_source
+1 1:2474473662:android:5047021a790dce42eb06ef     com.android.vending
+2 1:2474473662:android:5047021a790dce42eb06ef     com.android.vending
+  traffic_source.name traffic_source.medium traffic_source.source  stream_id
+1            (direct)                (none)              (direct) 2758285888
+2            (direct)                (none)              (direct) 2758285888
+  platform items is_active_user event_previous_timestamp
+1  ANDROID  NULL          FALSE                     &lt;NA&gt;
+2  ANDROID  NULL           TRUE         1703035993871001
+  collected_traffic_source.manual_source collected_traffic_source.manual_medium
+1                                   &lt;NA&gt;                                   &lt;NA&gt;
+2                                   &lt;NA&gt;                                   &lt;NA&gt;</code></pre>
+</div>
+</div>
+<p>Overall, it is very uninterpretable , because we have key value formats, data frame of data frames, list of data frames, and all sorts of weird things , Let’s also without going into next levels through use of max.level=1 argument check out the data again</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(jsonl_data,<span class="at">max.level =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="scrolling"><code>'data.frame':   24762 obs. of  20 variables:
+ $ event_date                   : chr  "20231221" "20231221" "20231221" "20231221" ...
+ $ event_timestamp              : chr  "1703146325195000" "1703134161235001" "1703134235541004" "1703134279049008" ...
+ $ event_name                   : chr  "app_remove" "screen_view" "level_end" "user_engagement" ...
+ $ event_params                 :List of 24762
+ $ event_bundle_sequence_id     : chr  "15" "100" "100" "100" ...
+ $ event_server_timestamp_offset: chr  "1383899326014" "494" "494" "494" ...
+ $ user_pseudo_id               : chr  "eae0e04fa3fa69ef646baaeaa716ea6b" "74b842a52de12e4cf74034f998ee98cf" "74b842a52de12e4cf74034f998ee98cf" "74b842a52de12e4cf74034f998ee98cf" ...
+ $ privacy_info                 :'data.frame':  24762 obs. of  3 variables:
+ $ user_properties              :List of 24762
+ $ user_first_touch_timestamp   : chr  "1701284050034000" "1698396193166000" "1698396193166000" "1698396193166000" ...
+ $ device                       :'data.frame':  24762 obs. of  11 variables:
+ $ geo                          :'data.frame':  24762 obs. of  6 variables:
+ $ app_info                     :'data.frame':  24762 obs. of  4 variables:
+ $ traffic_source               :'data.frame':  24762 obs. of  3 variables:
+ $ stream_id                    : chr  "2758285888" "2758285888" "2758285888" "2758285888" ...
+ $ platform                     : chr  "ANDROID" "ANDROID" "ANDROID" "ANDROID" ...
+ $ items                        :List of 24762
+ $ is_active_user               : logi  FALSE TRUE TRUE TRUE TRUE TRUE ...
+ $ event_previous_timestamp     : chr  NA "1703035993871001" "1703134211021004" "1703036243245008" ...
+ $ collected_traffic_source     :'data.frame':  24762 obs. of  2 variables:</code></pre>
+</div>
+</div>
+<p>So we have some Lists, some data frames, some characters, and some logical ones , we got a beautiful soup ,</p>
+<p>recall, the event_params column from the example picture</p>
+<p><img src="images/example_data-01.png" class="img-fluid"></p>
+<p>event_params has key and value nestings, and value has string, float , int double value nestings, and these are all in different formats, lets take a look at event_params with str function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(jsonl_data<span class="sc">$</span>event_params,<span class="at">list.len=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre class="scrolling"><code>List of 24762
+ $ :'data.frame':   3 obs. of  2 variables:
+  ..$ key  : chr [1:3] "ga_session_id" "ga_session_number" "firebase_event_origin"
+  ..$ value:'data.frame':   3 obs. of  2 variables:
+  .. ..$ int_value   : chr [1:3] "1702888810" "10" NA
+  .. ..$ string_value: chr [1:3] NA NA "auto"
+ $ :'data.frame':   7 obs. of  2 variables:
+  ..$ key  : chr [1:7] "entrances" "ga_session_number" "ga_session_id" "firebase_screen_id" ...
+  ..$ value:'data.frame':   7 obs. of  2 variables:
+  .. ..$ int_value   : chr [1:7] "1" "52" "1703134160" "-8779596609919170096" ...
+  .. ..$ string_value: chr [1:7] NA NA NA NA ...
+ $ :'data.frame':   9 obs. of  2 variables:
+  ..$ key  : chr [1:9] "ga_session_number" "level" "firebase_screen_id" "firebase_event_origin" ...
+  ..$ value:'data.frame':   9 obs. of  2 variables:
+  .. ..$ int_value   : chr [1:9] "52" "1" "-8779596609919170096" NA ...
+  .. ..$ string_value: chr [1:9] NA NA NA "app" ...
+  [list output truncated]</code></pre>
+</div>
+</div>
+<p>We have a complicated format, here is a demonstration of how to access event_params and its sub parts</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(jsonl_data) <span class="do">## Whole data class </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(jsonl_data<span class="sc">$</span>event_params) <span class="do">## Event params class </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "list"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>jsonl_data<span class="sc">$</span>event_params[[<span class="dv">1</span>]] <span class="do">## access first row's event_params</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    key value.int_value value.string_value
+1         ga_session_id      1702888810               &lt;NA&gt;
+2     ga_session_number              10               &lt;NA&gt;
+3 firebase_event_origin            &lt;NA&gt;               auto</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(jsonl_data<span class="sc">$</span>event_params[[<span class="dv">1</span>]]) <span class="do">## it's class </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>jsonl_data<span class="sc">$</span>event_params[[<span class="dv">1</span>]][<span class="dv">1</span>] <span class="do">## how to access event_params$key</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    key
+1         ga_session_id
+2     ga_session_number
+3 firebase_event_origin</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(jsonl_data<span class="sc">$</span>event_params[[<span class="dv">1</span>]][<span class="dv">1</span>]) <span class="do">## it's class</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>jsonl_data<span class="sc">$</span>event_params[[<span class="dv">1</span>]][<span class="dv">2</span>] <span class="do">## how to access event_params$value</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  value.int_value value.string_value
+1      1702888810               &lt;NA&gt;
+2              10               &lt;NA&gt;
+3            &lt;NA&gt;               auto</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(jsonl_data<span class="sc">$</span>event_params[[<span class="dv">1</span>]][<span class="dv">2</span>]) <span class="do">## it's class</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+</div>
+<p>We have a data frame jsonl_data, it has a list event_params, list is made of data frames, and in the data frame we have key column ,and a data frame named value, which has two columns, named int_value and string_value.<br>
+<br>
+Here is the issue, our data also has inconsistencies bellow take a look at two different “dataframes” under the event_params</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>jsonl_data<span class="sc">$</span>event_params[[<span class="dv">4983</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    key string_value
+1   previous_os_version           11
+2 firebase_event_origin         auto</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>jsonl_data<span class="sc">$</span>event_params[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    key value.int_value value.string_value
+1         ga_session_id      1702888810               &lt;NA&gt;
+2     ga_session_number              10               &lt;NA&gt;
+3 firebase_event_origin            &lt;NA&gt;               auto</code></pre>
+</div>
+</div>
+<p>Lets begin cleaning , firstly there were some non data frame, lists objects inside the event_params, we will iterate over the event_params, and convert them.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>list_of_dfs<span class="ot">=</span><span class="fu">list</span>()</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(jsonl_data)){</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  temp_df<span class="ot">=</span> <span class="fu">as.data.frame</span>(jsonl_data<span class="sc">$</span>event_params[[i]])</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  list_of_dfs[[i]] <span class="ot">&lt;-</span> temp_df</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(list_of_dfs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "list"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>list_of_dfs[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    key value.int_value value.string_value
+1         ga_session_id      1702888810               &lt;NA&gt;
+2     ga_session_number              10               &lt;NA&gt;
+3 firebase_event_origin            &lt;NA&gt;               auto</code></pre>
+</div>
+</div>
+<p>in the next step re call we had int value, and string value for each key, with one of these two always being null.<br>
+Since one of them is always null , we can concoctate them by binding columns , but we got two type of objects inside the event_params( was 3 before the above loop ), the case when there is<br>
+event_params with key, and value with value having 2 more sub columns and the case with even_params having no nested value column but instead a “string_value” column</p>
+<p>We can iterate over it in a for loop , for these 2 specific cases fix, bind the columns and unnest it out of the value and have a single value column, and when there is only key with string_value, we can just rename the column</p>
+<p><br>
+For fun we will use try catch because why not learn it while working in R ,Example usage of try catch</p>
+<p>Try</p>
+<p>To Do Something</p>
+<p>Except ## D0f fail</p>
+<p>Do something else instead<br>
+</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(list_of_dfs)) {</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(i)</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="st">"value"</span> <span class="sc">%in%</span> <span class="fu">names</span>(list_of_dfs[[i]])) {</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.list</span>(list_of_dfs[[i]]<span class="sc">$</span>value)) {</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>        list_of_dfs[[i]]<span class="sc">$</span>value <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>          <span class="sc">!</span><span class="fu">is.na</span>(list_of_dfs[[i]]<span class="sc">$</span>value<span class="sc">$</span>int_value),</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.character</span>(list_of_dfs[[i]]<span class="sc">$</span>value<span class="sc">$</span>int_value),</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.character</span>(list_of_dfs[[i]]<span class="sc">$</span>value<span class="sc">$</span>string_value)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>        list_of_dfs[[i]]<span class="sc">$</span>value <span class="ot">&lt;-</span> <span class="fu">as.character</span>(list_of_dfs[[i]]<span class="sc">$</span>value)</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>        list_of_dfs[[i]] <span class="ot">&lt;-</span> list_of_dfs[[i]][, <span class="sc">!</span>(<span class="fu">names</span>(list_of_dfs[[i]]) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"int_value"</span>, <span class="st">"string_value"</span>))]</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If an error occurs, rename the second column to "value"</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">names</span>(list_of_dfs[[i]])) <span class="sc">&gt;=</span> <span class="dv">2</span>) {</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>      <span class="co">#list_of_dfs[[4983]]="cancer"</span></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>      <span class="co">#print(i)</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>      <span class="co">#print(list_of_dfs[[i]])</span></span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>      <span class="co">#print(i)</span></span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>      new_temp_df<span class="ot">=</span> <span class="fu">cbind.data.frame</span>(list_of_dfs[[i]][[<span class="dv">1</span>]],<span class="fu">c</span>(list_of_dfs[[i]][[<span class="dv">2</span>]]))</span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">names</span>(new_temp_df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"key"</span>,<span class="st">"value"</span>)</span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>      list_of_dfs[[i]]<span class="ot">&lt;&lt;-</span> new_temp_df</span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>      <span class="co">#print(list_of_dfs[[i]])</span></span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>list_of_dfs[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    key      value
+1         ga_session_id 1702888810
+2     ga_session_number         10
+3 firebase_event_origin       auto</code></pre>
+</div>
+</div>
+<p>Note that try catch and error handling is usually much slower than using if statements and should primarily be used for cases that can’t be predicted or handled with regular methods. but it can also be faster when used in place of an extremely complex if check.</p>
+<p>I the next step we flatten the event_params,</p>
+<p>Instead of having key and values, what if every unique key was a data set column , and values were under it, and if in that respective row, there is no element for a specific key we can just keep null, this would make it easier for anyone else working in this data in future.<br>
+<br>
+Luckily, Tidyverse ensures we don’t have to write a complex loop here since we have dealt with the inconsistencies in our data but first lets get these thing out of list of data frames into a single DF, we will use bind_rows function again from tidyverse</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>combined_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(list_of_dfs, <span class="at">.id =</span> <span class="st">"df_id"</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(combined_df) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  df_id                   key      value
+1     1         ga_session_id 1702888810
+2     1     ga_session_number         10
+3     1 firebase_event_origin       auto
+4     2             entrances          1
+5     2     ga_session_number         52
+6     2         ga_session_id 1703134160</code></pre>
+</div>
+</div>
+<p>Now all we got to do is change the binded element from long to wide format for each ID, pivot_wider will automatically fill it with nulls for cases when in that row a specific key is not used.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>flattened_df <span class="ot">&lt;-</span> combined_df <span class="sc">%&gt;%</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> key, <span class="at">values_from =</span> value)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>flattened_df <span class="ot">&lt;-</span> flattened_df[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(flattened_df )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 24
+  ga_session_id ga_session_number firebase_event_origin entrances
+  &lt;chr&gt;         &lt;chr&gt;             &lt;chr&gt;                 &lt;chr&gt;    
+1 1702888810    10                auto                  &lt;NA&gt;     
+2 1703134160    52                auto                  1        
+3 1703134160    52                app                   &lt;NA&gt;     
+4 1703134160    52                auto                  &lt;NA&gt;     
+5 1703190214    53                auto                  1        
+6 1703190214    53                app                   &lt;NA&gt;     
+# ℹ 20 more variables: firebase_screen_id &lt;chr&gt;, engaged_session_event &lt;chr&gt;,
+#   firebase_screen_class &lt;chr&gt;, level &lt;chr&gt;, success &lt;chr&gt;, value &lt;chr&gt;,
+#   engagement_time_msec &lt;chr&gt;, session_engaged &lt;chr&gt;,
+#   firebase_previous_class &lt;chr&gt;, firebase_previous_id &lt;chr&gt;,
+#   update_with_analytics &lt;chr&gt;, system_app &lt;chr&gt;,
+#   previous_first_open_count &lt;chr&gt;, system_app_update &lt;chr&gt;,
+#   firebase_conversion &lt;chr&gt;, source &lt;chr&gt;, medium &lt;chr&gt;, …</code></pre>
+</div>
+</div>
+<p>We can now cbind this into our main dataframe, and also drop some other irrelevant columns and the column we have just flattened</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>final_df<span class="ot">=</span> <span class="fu">cbind.data.frame</span>(jsonl_data,flattened_df)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>final_df2<span class="ot">=</span> final_df <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>event_params,<span class="sc">-</span>user_properties,<span class="sc">-</span>items) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s take a look at our data again</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(final_df2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   24762 obs. of  41 variables:
+ $ event_date                   : chr  "20231221" "20231221" "20231221" "20231221" ...
+ $ event_timestamp              : chr  "1703146325195000" "1703134161235001" "1703134235541004" "1703134279049008" ...
+ $ event_name                   : chr  "app_remove" "screen_view" "level_end" "user_engagement" ...
+ $ event_bundle_sequence_id     : chr  "15" "100" "100" "100" ...
+ $ event_server_timestamp_offset: chr  "1383899326014" "494" "494" "494" ...
+ $ user_pseudo_id               : chr  "eae0e04fa3fa69ef646baaeaa716ea6b" "74b842a52de12e4cf74034f998ee98cf" "74b842a52de12e4cf74034f998ee98cf" "74b842a52de12e4cf74034f998ee98cf" ...
+ $ privacy_info                 :'data.frame':  24762 obs. of  3 variables:
+  ..$ analytics_storage   : chr  "Yes" "Yes" "Yes" "Yes" ...
+  ..$ ads_storage         : chr  "Yes" "Yes" "Yes" "Yes" ...
+  ..$ uses_transient_token: chr  "No" "No" "No" "No" ...
+ $ user_first_touch_timestamp   : chr  "1701284050034000" "1698396193166000" "1698396193166000" "1698396193166000" ...
+ $ device                       :'data.frame':  24762 obs. of  11 variables:
+  ..$ category                : chr  "mobile" "mobile" "mobile" "mobile" ...
+  ..$ mobile_brand_name       : chr  "Samsung" "Samsung" "Samsung" "Samsung" ...
+  ..$ mobile_model_name       : chr  "SM-G7102" "SM-J110H" "SM-J110H" "SM-J110H" ...
+  ..$ mobile_marketing_name   : chr  "Galaxy Grand 2" "Galaxy J1" "Galaxy J1" "Galaxy J1" ...
+  ..$ mobile_os_hardware_model: chr  "SM-G7102" "SM-J110H" "SM-J110H" "SM-J110H" ...
+  ..$ operating_system        : chr  "Android" "Android" "Android" "Android" ...
+  ..$ operating_system_version: chr  "Android 4.4.2" "Android 4.4.4" "Android 4.4.4" "Android 4.4.4" ...
+  ..$ advertising_id          : chr  "f28a3de1-340f-4d84-a491-ae5bc5c66a8a" "6d58a8cf-8508-45cb-9f0a-41fbbc14d0c7" "6d58a8cf-8508-45cb-9f0a-41fbbc14d0c7" "6d58a8cf-8508-45cb-9f0a-41fbbc14d0c7" ...
+  ..$ language                : chr  "ar-ae" "ar-ae" "ar-ae" "ar-ae" ...
+  ..$ is_limited_ad_tracking  : chr  "Yes" "Yes" "Yes" "Yes" ...
+  ..$ time_zone_offset_seconds: chr  "7200" "7200" "7200" "7200" ...
+ $ geo                          :'data.frame':  24762 obs. of  6 variables:
+  ..$ city         : chr  "Kafr el-Sheikh" "" "" "" ...
+  ..$ country      : chr  "Egypt" "Jordan" "Jordan" "Jordan" ...
+  ..$ continent    : chr  "Africa" "Asia" "Asia" "Asia" ...
+  ..$ region       : chr  "Kafr El-Sheikh Governorate" "Amman Governorate" "Amman Governorate" "Amman Governorate" ...
+  ..$ sub_continent: chr  "Northern Africa" "Western Asia" "Western Asia" "Western Asia" ...
+  ..$ metro        : chr  "(not set)" "(not set)" "(not set)" "(not set)" ...
+ $ app_info                     :'data.frame':  24762 obs. of  4 variables:
+  ..$ id             : chr  "com.elakerem.focus" "com.elakerem.focus" "com.elakerem.focus" "com.elakerem.focus" ...
+  ..$ version        : chr  "2.0.22" "2.0.22" "2.0.22" "2.0.22" ...
+  ..$ firebase_app_id: chr  "1:2474473662:android:5047021a790dce42eb06ef" "1:2474473662:android:5047021a790dce42eb06ef" "1:2474473662:android:5047021a790dce42eb06ef" "1:2474473662:android:5047021a790dce42eb06ef" ...
+  ..$ install_source : chr  "com.android.vending" "com.android.vending" "com.android.vending" "com.android.vending" ...
+ $ traffic_source               :'data.frame':  24762 obs. of  3 variables:
+  ..$ name  : chr  "(direct)" "(direct)" "(direct)" "(direct)" ...
+  ..$ medium: chr  "(none)" "(none)" "(none)" "(none)" ...
+  ..$ source: chr  "(direct)" "(direct)" "(direct)" "(direct)" ...
+ $ stream_id                    : chr  "2758285888" "2758285888" "2758285888" "2758285888" ...
+ $ platform                     : chr  "ANDROID" "ANDROID" "ANDROID" "ANDROID" ...
+ $ is_active_user               : logi  FALSE TRUE TRUE TRUE TRUE TRUE ...
+ $ event_previous_timestamp     : chr  NA "1703035993871001" "1703134211021004" "1703036243245008" ...
+ $ collected_traffic_source     :'data.frame':  24762 obs. of  2 variables:
+  ..$ manual_source: chr  NA NA NA NA ...
+  ..$ manual_medium: chr  NA NA NA NA ...
+ $ ga_session_id                : chr  "1702888810" "1703134160" "1703134160" "1703134160" ...
+ $ ga_session_number            : chr  "10" "52" "52" "52" ...
+ $ firebase_event_origin        : chr  "auto" "auto" "app" "auto" ...
+ $ entrances                    : chr  NA "1" NA NA ...
+ $ firebase_screen_id           : chr  NA "-8779596609919170096" "-8779596609919170096" "-8779596609919170096" ...
+ $ engaged_session_event        : chr  NA "1" "1" "1" ...
+ $ firebase_screen_class        : chr  NA "UnityPlayerActivity" "UnityPlayerActivity" "UnityPlayerActivity" ...
+ $ level                        : chr  NA NA "1" NA ...
+ $ success                      : chr  NA NA "0" NA ...
+ $ value                        : chr  NA NA "0" NA ...
+ $ engagement_time_msec         : chr  NA NA NA "114189" ...
+ $ session_engaged              : chr  NA NA NA NA ...
+ $ firebase_previous_class      : chr  NA NA NA NA ...
+ $ firebase_previous_id         : chr  NA NA NA NA ...
+ $ update_with_analytics        : chr  NA NA NA NA ...
+ $ system_app                   : chr  NA NA NA NA ...
+ $ previous_first_open_count    : chr  NA NA NA NA ...
+ $ system_app_update            : chr  NA NA NA NA ...
+ $ firebase_conversion          : chr  NA NA NA NA ...
+ $ source                       : chr  NA NA NA NA ...
+ $ medium                       : chr  NA NA NA NA ...
+ $ campaign_info_source         : chr  NA NA NA NA ...
+ $ previous_os_version          : chr  NA NA NA NA ...
+ $ appnava_churn_prob           : chr  NA NA NA NA ...</code></pre>
+</div>
+</div>
+<p>Our data is now free of the chaos of event_params<br>
+We however still have few more things to do as we got some columns nested, example, geo column has other columns under it like geo.country, geo.continent and so on, and this might make future work slower,</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(final_df2<span class="sc">$</span>geo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   24762 obs. of  6 variables:
+ $ city         : chr  "Kafr el-Sheikh" "" "" "" ...
+ $ country      : chr  "Egypt" "Jordan" "Jordan" "Jordan" ...
+ $ continent    : chr  "Africa" "Asia" "Asia" "Asia" ...
+ $ region       : chr  "Kafr El-Sheikh Governorate" "Amman Governorate" "Amman Governorate" "Amman Governorate" ...
+ $ sub_continent: chr  "Northern Africa" "Western Asia" "Western Asia" "Western Asia" ...
+ $ metro        : chr  "(not set)" "(not set)" "(not set)" "(not set)" ...</code></pre>
+</div>
+</div>
+<p>To ensure our data is friendly for anyone, we can write a small function that detect such “dataframes under our dataframe” and unnest them</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>is_dataframe <span class="ot">&lt;-</span> <span class="cf">function</span>(column) {</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">is.data.frame</span>(column)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="do">### object to save columns which are dataframes</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>dataframe_cols <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each column in final_df2</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (col <span class="cf">in</span> <span class="fu">colnames</span>(final_df2)) {</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is_dataframe</span>(final_df2[[col]])) {</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>    dataframe_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(dataframe_cols, col)</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="do">## loop through them, take the column under column to outside of it  and combined them</span></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>combined_nested_dfs<span class="ot">=</span><span class="fu">rep</span>(<span class="dv">0</span>,<span class="fu">nrow</span>(final_df2))</span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (element <span class="cf">in</span> dataframe_cols){</span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>  temp_index<span class="ot">=</span><span class="fu">as.character</span>(element)</span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>  temp_df<span class="ot">=</span> final_df2[[temp_index]]</span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>  combined_nested_dfs<span class="ot">=</span><span class="fu">cbind.data.frame</span>(combined_nested_dfs,temp_df)</span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>final_df2<span class="ot">=</span>final_df2 <span class="sc">|&gt;</span> <span class="fu">select</span>(<span class="sc">-</span>dataframe_cols)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using an external vector in selections was deprecated in tidyselect 1.1.0.
+ℹ Please use `all_of()` or `any_of()` instead.
+  # Was:
+  data %&gt;% select(dataframe_cols)
+
+  # Now:
+  data %&gt;% select(all_of(dataframe_cols))
+
+See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>final_df3<span class="ot">=</span><span class="fu">cbind.data.frame</span>(final_df2,combined_nested_dfs)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen=</span><span class="dv">999</span>)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(final_df3,<span class="st">"plsfkinwork3.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We have written lots of code to have an “end scientist” friendly rectangular dataset final look before we end the dataprep</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(final_df3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   24762 obs. of  65 variables:
+ $ event_date                   : chr  "20231221" "20231221" "20231221" "20231221" ...
+ $ event_timestamp              : chr  "1703146325195000" "1703134161235001" "1703134235541004" "1703134279049008" ...
+ $ event_name                   : chr  "app_remove" "screen_view" "level_end" "user_engagement" ...
+ $ event_bundle_sequence_id     : chr  "15" "100" "100" "100" ...
+ $ event_server_timestamp_offset: chr  "1383899326014" "494" "494" "494" ...
+ $ user_pseudo_id               : chr  "eae0e04fa3fa69ef646baaeaa716ea6b" "74b842a52de12e4cf74034f998ee98cf" "74b842a52de12e4cf74034f998ee98cf" "74b842a52de12e4cf74034f998ee98cf" ...
+ $ user_first_touch_timestamp   : chr  "1701284050034000" "1698396193166000" "1698396193166000" "1698396193166000" ...
+ $ stream_id                    : chr  "2758285888" "2758285888" "2758285888" "2758285888" ...
+ $ platform                     : chr  "ANDROID" "ANDROID" "ANDROID" "ANDROID" ...
+ $ is_active_user               : logi  FALSE TRUE TRUE TRUE TRUE TRUE ...
+ $ event_previous_timestamp     : chr  NA "1703035993871001" "1703134211021004" "1703036243245008" ...
+ $ ga_session_id                : chr  "1702888810" "1703134160" "1703134160" "1703134160" ...
+ $ ga_session_number            : chr  "10" "52" "52" "52" ...
+ $ firebase_event_origin        : chr  "auto" "auto" "app" "auto" ...
+ $ entrances                    : chr  NA "1" NA NA ...
+ $ firebase_screen_id           : chr  NA "-8779596609919170096" "-8779596609919170096" "-8779596609919170096" ...
+ $ engaged_session_event        : chr  NA "1" "1" "1" ...
+ $ firebase_screen_class        : chr  NA "UnityPlayerActivity" "UnityPlayerActivity" "UnityPlayerActivity" ...
+ $ level                        : chr  NA NA "1" NA ...
+ $ success                      : chr  NA NA "0" NA ...
+ $ value                        : chr  NA NA "0" NA ...
+ $ engagement_time_msec         : chr  NA NA NA "114189" ...
+ $ session_engaged              : chr  NA NA NA NA ...
+ $ firebase_previous_class      : chr  NA NA NA NA ...
+ $ firebase_previous_id         : chr  NA NA NA NA ...
+ $ update_with_analytics        : chr  NA NA NA NA ...
+ $ system_app                   : chr  NA NA NA NA ...
+ $ previous_first_open_count    : chr  NA NA NA NA ...
+ $ system_app_update            : chr  NA NA NA NA ...
+ $ firebase_conversion          : chr  NA NA NA NA ...
+ $ source                       : chr  NA NA NA NA ...
+ $ medium                       : chr  NA NA NA NA ...
+ $ campaign_info_source         : chr  NA NA NA NA ...
+ $ previous_os_version          : chr  NA NA NA NA ...
+ $ appnava_churn_prob           : chr  NA NA NA NA ...
+ $ combined_nested_dfs          : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ analytics_storage            : chr  "Yes" "Yes" "Yes" "Yes" ...
+ $ ads_storage                  : chr  "Yes" "Yes" "Yes" "Yes" ...
+ $ uses_transient_token         : chr  "No" "No" "No" "No" ...
+ $ category                     : chr  "mobile" "mobile" "mobile" "mobile" ...
+ $ mobile_brand_name            : chr  "Samsung" "Samsung" "Samsung" "Samsung" ...
+ $ mobile_model_name            : chr  "SM-G7102" "SM-J110H" "SM-J110H" "SM-J110H" ...
+ $ mobile_marketing_name        : chr  "Galaxy Grand 2" "Galaxy J1" "Galaxy J1" "Galaxy J1" ...
+ $ mobile_os_hardware_model     : chr  "SM-G7102" "SM-J110H" "SM-J110H" "SM-J110H" ...
+ $ operating_system             : chr  "Android" "Android" "Android" "Android" ...
+ $ operating_system_version     : chr  "Android 4.4.2" "Android 4.4.4" "Android 4.4.4" "Android 4.4.4" ...
+ $ advertising_id               : chr  "f28a3de1-340f-4d84-a491-ae5bc5c66a8a" "6d58a8cf-8508-45cb-9f0a-41fbbc14d0c7" "6d58a8cf-8508-45cb-9f0a-41fbbc14d0c7" "6d58a8cf-8508-45cb-9f0a-41fbbc14d0c7" ...
+ $ language                     : chr  "ar-ae" "ar-ae" "ar-ae" "ar-ae" ...
+ $ is_limited_ad_tracking       : chr  "Yes" "Yes" "Yes" "Yes" ...
+ $ time_zone_offset_seconds     : chr  "7200" "7200" "7200" "7200" ...
+ $ city                         : chr  "Kafr el-Sheikh" "" "" "" ...
+ $ country                      : chr  "Egypt" "Jordan" "Jordan" "Jordan" ...
+ $ continent                    : chr  "Africa" "Asia" "Asia" "Asia" ...
+ $ region                       : chr  "Kafr El-Sheikh Governorate" "Amman Governorate" "Amman Governorate" "Amman Governorate" ...
+ $ sub_continent                : chr  "Northern Africa" "Western Asia" "Western Asia" "Western Asia" ...
+ $ metro                        : chr  "(not set)" "(not set)" "(not set)" "(not set)" ...
+ $ id                           : chr  "com.elakerem.focus" "com.elakerem.focus" "com.elakerem.focus" "com.elakerem.focus" ...
+ $ version                      : chr  "2.0.22" "2.0.22" "2.0.22" "2.0.22" ...
+ $ firebase_app_id              : chr  "1:2474473662:android:5047021a790dce42eb06ef" "1:2474473662:android:5047021a790dce42eb06ef" "1:2474473662:android:5047021a790dce42eb06ef" "1:2474473662:android:5047021a790dce42eb06ef" ...
+ $ install_source               : chr  "com.android.vending" "com.android.vending" "com.android.vending" "com.android.vending" ...
+ $ name                         : chr  "(direct)" "(direct)" "(direct)" "(direct)" ...
+ $ medium                       : chr  "(none)" "(none)" "(none)" "(none)" ...
+ $ source                       : chr  "(direct)" "(direct)" "(direct)" "(direct)" ...
+ $ manual_source                : chr  NA NA NA NA ...
+ $ manual_medium                : chr  NA NA NA NA ...</code></pre>
+</div>
+</div>
+<p>Lets save the results before we begin our data analysis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(final_df3,<span class="st">"plsfkinwork3.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
